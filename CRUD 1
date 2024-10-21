@@ -1,0 +1,147 @@
+#Write an SQL Query to fetch names of the customer that are not refered by the customer with referee id = 102
+SELECT name
+FROM Customer
+WHERE referee_id != 102;
+
+#Write an SQL Query to fetch names of the customer that are refered by the customer with referee id = 102
+SELECT name
+FROM Customer
+WHERE referee_id = 102;
+
+#Write an SQL Query to report the unique customers with positive revenue in the year 2021. Note: Use distinct operator to get unique values
+SELECT DISTINCT customer_id
+FROM Customers
+WHERE year = 2021 AND revenue > 0;
+
+#Write a SQL Query to Create a new column named "New_salary" within their "employees" table. This Column will reflect the adjusted salary after applying a 20%raise to the current salary("salary")
+SELECT
+emp_id,
+name, 
+salary, 
+ROUND(salary*1.20, 0) AS New_salary
+FROM employees;
+
+#Write a query to calculate the sub_total for each order, return the details of the orderNumber, productCode and sub_total. Note: Please ensure to read the sample out explanation.
+#Round off the sub_total up to two decimal places ,  Order the output by the orderNumber in ascending order and then sub_total in descending order
+SELECT
+orderNumber,
+productCode,
+Round(quantityOrdered * priceEach, 2) AS sub_total
+FROM orderDetails
+ORDER BY
+orderNumber ASC,
+sub_total DESC;
+
+#Write a query to get all the details of all the employees from job_history except for the employee with ID 101 order employee_id and job_id in ascending order
+SELECT *
+FROM job_history
+WHERE employee_id != 101
+ORDER BY
+employee_id ASC,
+job_id ASC;
+
+# Write an SQL query to report the movies with an odd numbered ID, and a description that is not "boring" Return the result table by rating in descending order and id in ascending order
+SELECT *
+FROM Cinema
+WHERE mod(id, 2) !=0 AND description != 'boring'
+ORDER BY rating DESC, id ASC;
+
+#Write an SQL query to report the name, population, and area of the big countries, A big country have area greater than 300000 km2, and pupulation greater than 20000000
+#Return the result table ordered by population in ascending order
+SELECT name, population, area
+FROM world
+WHERE area > 300000 AND population > 20000000
+ORDER BY population ASC;
+
+#Write an SQL query to find the IDs of the invalid tweets, invalid tweet is strictly greater than 15
+SELECT tweet_id
+FROM tweets
+WHERE LENGTH(content) > 15
+ORDER BY tweet_id ASC;
+
+# Write an SQL query to search for customers whose first name is "John" or last name is "Smith", and full name is not "John Smith" Return the output ordered by customer_id in ascending order
+SELECT *
+FROM Customers
+WHERE (first_name = 'John' OR last_name = 'Smith') AND NOT (first_name = 'John' AND last_name = 'Smith')
+ORDER BY customer_id ASC;
+
+#Write an SQL query to retreive products that belong to the "Electronics" category and have a price greater than 500 or products that belong to the "Apparel" category and have a price less than 50
+# Return the output ordered by product_id in ascending order
+SELECT *
+FROM Products
+WHERE (category = 'Electronics' AND price > 500) OR (category = 'Apparel' AND price < 50)
+ORDER BY product_id ASC;
+
+#Write a query to display the titles of the movies that are released after 2014 and have an average vote rating greater than 7
+# Return the column original_title in ascending order
+SELECT original_title
+FROM movies
+Where release_year > 2014 AND vote_average > 7
+ORDER BY original_title ASC;
+
+#Write a query to find the details of those employees who work in the departments with numbers included in 30, 40 or 90
+#Return the result ordered by employee_id in ascending order
+SELECT employee_id, first_name, job_id, department_id
+FROM employees
+WHERE department_id IN (30, 40, 90)
+ORDER BY employee_id ASC;
+
+# Write a query to find the employees whose officeCodes are not included in 4,6,7
+# Return the result ordered by firstName and lastName in ascending order
+SELECT firstName, lastName, jobTitle
+FROM employees
+WHERE officeCode NOT IN (4, 6, 7)
+ORDER BY firstName ASC, lastName ASC;
+
+#Display the details of the movies which belong to the 'Horror' genre
+#return the columns 'original_title' and 'popularity' return the result ordered by the popularity in descending order
+SELECT original_title, popularity
+FROM movies
+WHERE genres = 'Horror'
+ORDER BY popularity DESC;
+
+#Write an SQL query to find the ids of products that are both low fat and recyclable
+#Return the result table sorted by product_id in ascending order
+SELECT product_id
+FROM Products
+WHERE low_fats = 'Y' AND recyclable = 'Y'
+ORDER BY product_ID ASC;
+
+#Write a SQL query for low Quality problems IDs, return the result table in ascending order
+SELECT problem_id
+FROM Problems
+WHERE(likes/(likes + dislikes)) < 0.6
+ORDER BY problem_id ASC;
+
+# Write an SQL query to retreive the tiles of movies released in 2000 or later that belong to the genres "Sci-Fi" or "Action"
+#Return the result ordered by movie_id in ascending order
+SELECT movie_title
+FROM Movies
+WHERE release_year >= 2000 AND genre IN ('Sci-Fi', 'Action')
+ORDER BY movie_id ASC;
+
+# Write an SQL query to find the names of customers who have not made a purchase since January 1, 2023
+SELECT customer_name
+FROM Customers
+WHERE last_purchase_date < '2023-01-01'
+ORDER BY customer_id ASC;
+
+# Write an SQL query to retreive the order IDs of orders placed by customer 1 that are either "Shipped" or "Delivered"
+SELECT order_id
+FROM Orders
+WHERE customer_id = 1 AND order_status IN ('Shipped', 'Delivered')
+ORDER BY order_id ASC;
+
+#Write an SQL query to retreive the titles of movies that are not in the genres "Romance" or "Drama"
+SELECT movie_title
+FROM Movies
+WHERE genre NOT IN ('Romance', 'Drama')
+ORDER BY movie_id ASC;
+
+
+
+
+
+
+
+
