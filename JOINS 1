@@ -1,0 +1,191 @@
+JOINS 1
+
+#Write a query to display the details of the employees who joined the company before their managers joined the company.
+Return the columns 'employee_id' 'first_name' 'last_name', Return the result ordered by employee_id in ascending order.
+
+-CODE
+
+SELECT e.employee_id, e.first_name, e.last_name
+FROM employees e
+JOIN employees m ON e.manager_id = m.employee_id
+WHERE e.hire_date < m.hire_date
+ORDER BY e.employee_id;
+
+#Write a query to find details of the employees who work in the 'Human Resources' department.
+Return the columns 'employee_id', 'department_id', 'first_name', 'last_name', 'job_id', and 'department_name'. Return the result ordered by employee_id in ascending order.
+
+-CODE
+
+SELECT e.employee_id, e.department_id, e.first_name, e.last_name, e.job_id, d.departmennt_name
+FROM employees e
+JOIN departments d ON e.department_id = d.department_id
+WHERE d.department_name = 'Human Resources'
+ORDER BY e.employee_id;
+
+#Write a query to find all the people who viewed more than one article on the same date. Save the viewer_id as id. Return the result sorted by id in ascending order.
+
+-CODE
+
+SELECT DISTINCT v1.viewer_id AS id
+FROM views v1
+JOIN views V2 ON v1.viewer_id = v2.viewer_id AND v1.view_date = v2.view_date AND v1.article_id != v2.article_id
+ORDER BY id;
+
+#Display the details of those employees who have a manager working in the department that is US based. Return the columns employee_id, first_name and last_name. Return the result ordered by emmployee_id in ascending order
+
+-CODE
+
+Select e.employee_id, e.first_name, e.last_name
+FROM employees e
+JOIN employees m ON e.manager_id = m.employee_id
+JOIN departments d ON m.department_id = d.department_id
+JOIN locations l ON d.location_id = l.location_id
+WHERE l.country_id = 'US'
+ORDER BY e.employee_id;
+
+#Display the details of the employees who had job titles like 'sales' in the past and the min_salary is greater than or equal to 6000
+
+-CODE
+
+SELECT emp.employee_id, dept.department_name, j.job_id, j.job_title, j.min_salary
+FROM employees as emp
+JOIN departments as dept ON emp.department_id = dept.department_id
+JOIN job_history as jh ON emp.employee_id = jh.employee_id
+JOIN jobs as j ON jh.job_id = j.job_id
+WHERE j.min_salary >= 6000 AND j.job_title LIKE '%sales%'
+ORDER BY emp.employee_id, j.min_salary ASC;
+
+#Write an SQL query to find the employee names(as 'Employee') who earn more thsn their managers. Return the result table ordered by names.
+
+-CODE
+
+SELECT e.name AS Employee
+FROM employee e
+JOIN employee m ON e.managerID = m.id
+WHERE e.salary > m.salary
+ORDER BY Employee;
+
+#Write an SQL query to report the distinct titles of kid friendly movies streamed in june 2020. Return the output ordered by title in ascending order
+
+-CODE
+
+SELECT DISTINCT c.title
+FROM TVProgram tp
+JOIN content c ON tp.content_id = c.content_id
+WHERE c.kids_content LIKE 'Y' AND c.content_type = 'MOVIES' AND MONTH(tp.program_date) = 6 AND YEAR(tp.program_date) = 2020
+ORDER BY c.title;
+
+#Write an SQL query that reports all the possible matches of the legue. Note that every two matches with each other, with one team being the home_team once and the other time being the away_team
+Return the output ordered by home_team in ascending order.
+
+SELECT t1.team_name AS home_team, t2.team_name AS away_team
+FROM teams t1
+JOIN teams t2 ON t1.team_name != t2.team_name
+ORDER BY home_team;
+
+#Tables : Sales, Products, Customers, Employees
+Write an SQL query to retreive the sale ID, product name, customer name, employee name and sale amount for all sales, Include details about the product, customer and employee.
+Return the output ordered by sale_amount in descending order.
+
+-CODE
+
+SELECT s.sale_id, p.product_name, c.customer_name, e.employee_name, s.sale_amount
+FROM Sales s
+JOIN Products p ON s.product_id = p.product_id
+JOIN Customers c ON s.customer_id = c.customer_id
+JOIN Employees e ON s.employee_id = e.employee_id
+ORDER BY s.sale_amount DESC;
+
+#Tables : Sales, Products, Customers, Employees
+Write an SQL query to fetch the names of the employees who sold 'Laptop'
+Return the output ordered by employee_name in ascending order.
+
+-CODE
+
+SELECT DISTINCT e.employee_name
+FROM Sales s
+JOIN Products p ON s.product_id = p.product_id
+JOIN Employees e ON s.employee_id = e.employee_id
+WHERE p.product_name = 'Laptop'
+ORDER BY e.employee_name;
+
+#Write an SQL query that reports the spending of each user.
+Return the resulting table ordered by spending in descending order. In case of a tie, order them by user_id in ascending
+
+-CODE
+
+SELECT s.user_id, SUM(s.quantity * p.price) AS spending
+FROM sales s
+JOIN product p ON s.product_id = p.product_id
+GROUP BY s.user_id
+ORDER BY spending DESC, s.user_id ASC;
+
+#Extract the details of the employees who work under the same manager. Return the columns 'manager_id', 'Manager', 'Employee'.
+Use the employees table.
+
+-CODE
+
+SELECT e.manager_id,
+ CONCAT(m.first_name, ' ', m.last_name) AS Manager,
+ CONCAT(e.first_name, ' ', e.last_name) AS Employee
+
+ FROM employees e
+
+ JOIN employees m ON e.manager_id = m.employee_id
+
+ORDER BY e.manager_id ASC, Employee ASC;
+
+#display the details of employees who were hired between the specified date '1998-01-01' and three months from that date.
+
+-CODE
+
+SELECT 
+    e.employee_id,
+    e.first_name,
+    e.last_name,
+    e.salary,
+    d.department_name,
+    e.hire_date,
+    l.city
+FROM 
+    employees e
+JOIN 
+    departments d ON e.department_id = d.department_id
+JOIN 
+    locations l ON d.location_id = l.location_id
+WHERE 
+    e.hire_date BETWEEN '1998-01-01' AND DATE_ADD('1998-01-01', INTERVAL 90 DAY)
+ORDER BY 
+    e.employee_id ASC;
+
+#Write an SQL query to fetch the names of the top 2 products which had the highest sale_amount.
+
+-CODE
+
+SELECT 
+    p.product_name, s.sale_amount
+FROM 
+    Sales s
+JOIN 
+    Products p ON s.product_id = p.product_id
+GROUP BY 
+    p.product_id, p.product_name
+ORDER BY 
+    SUM(s.sale_amount) DESC
+LIMIT 2;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
